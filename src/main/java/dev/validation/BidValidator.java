@@ -32,10 +32,16 @@ public class BidValidator {
     }
 
     private boolean isValidRouteNumber(String routNumber) {
+
+        if (routNumber == null) return false;
         return routNumber.length() == 8;
     }
 
     public boolean isValid(Bid bid) {
-        return isValidDateTime(bid.getDateTime()) && isValidRouteNumber(bid.getRouteNumber());
+
+        if (bid == null) return false;
+
+        return isValidDateTime(bid.getDateTime())
+                && isValidRouteNumber(bid.getRouteNumber());
     }
 }
