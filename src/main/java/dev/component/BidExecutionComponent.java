@@ -1,4 +1,4 @@
-package dev.controller;
+package dev.component;
 
 import dev.entities.Bid;
 import dev.entities.Status;
@@ -7,8 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,8 +18,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
-@RestController
-public class BidExecutionController {
+@Component
+public class BidExecutionComponent {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -28,7 +29,7 @@ public class BidExecutionController {
     @Value("${payService}")
     private String payService;
 
-    @GetMapping("/pay")
+    @Scheduled(fixedRate = 60 * 1000)
     public void payment() throws IOException, InterruptedException {
 
         logger.info("Method payment()");
