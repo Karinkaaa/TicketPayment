@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 public class BidAcceptanceController {
 
-    private Logger logger = LoggerFactory.getLogger(BidAcceptanceController.class);
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private BidRepository bidRepository;
