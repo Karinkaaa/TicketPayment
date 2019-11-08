@@ -1,7 +1,6 @@
 package dev.entities;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 public class Bid {
@@ -11,21 +10,19 @@ public class Bid {
     private Long id;
 
     private String routeNumber;
-    private LocalDateTime dateTime = LocalDateTime.now();
+    private Long dateTime;
 
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.IN_PROGRESS;
 
-    public Bid(String routeNumber) {
-        this.status = Status.IN_PROGRESS;
-        this.routeNumber = routeNumber;
+    public Bid() {
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(Long dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -37,7 +34,7 @@ public class Bid {
         return routeNumber;
     }
 
-    public LocalDateTime getDateTime() {
+    public Long getDateTime() {
         return dateTime;
     }
 
@@ -51,5 +48,18 @@ public class Bid {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer("\n---BID---");
+
+        sb.append("\nID: ").append(getId());
+        sb.append("\nRoute number: ").append(getRouteNumber());
+        sb.append("\nDateTime: ").append(getDateTime());
+        sb.append("\nStatus: ").append(getStatus()).append("\n");
+
+        return sb.toString();
     }
 }

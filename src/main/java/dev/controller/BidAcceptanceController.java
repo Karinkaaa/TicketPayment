@@ -6,10 +6,12 @@ import dev.validation.BidValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class BidAcceptanceController {
@@ -22,30 +24,27 @@ public class BidAcceptanceController {
     @Autowired
     private BidValidator validator;
 
-    @GetMapping
-    public String mainPage() {
+    @GetMapping(produces = "application/json")
+    public List<Bid> mainPage() {
 
-        logger.info("main page");
-        Bid bid = new Bid("123456");
-        bidRepository.save(bid);
-        return "MAIN PAGE " + bid.getDateTime() + " Route: " + bid.getRouteNumber();
+        logger.info("Main page");
+        return bidRepository.findAll();
     }
 
-    @PostMapping("/{routeNumber}")
-    public Long save(@PathVariable String routeNumber) {
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public Long save(@RequestBody Bid bid) {
 
-        Bid bid = new Bid(routeNumber);
-
-        logger.info("method save()");
-        logger.info(bid.toString());
+        logger.info("Method save()");
 
         if (validator.isValid(bid)) {
 
-            logger.info("try save() - is valid");
+            logger.info("Bid is valid");
             bidRepository.save(bid);
+
             return bid.getId();
         }
-        logger.info("NOT VALID");
+
+        logger.error("Bid is not valid");
         return null;
     }
 }
